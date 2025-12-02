@@ -1,0 +1,373 @@
+:root {
+  --pointer-x: 50%;
+  --pointer-y: 50%;
+  --pointer-from-center: 0;
+  --pointer-from-top: 0.5;
+  --pointer-from-left: 0.5;
+  --card-opacity: 0;
+  --rotate-x: 0deg;
+  --rotate-y: 0deg;
+  --background-x: 50%;
+  --background-y: 50%;
+  --ec-card-radius: 20px;
+}
+
+.ec-card-wrapper {
+  perspective: 500px;
+  transform: translate3d(0, 0, 0.1px);
+  position: relative;
+  touch-action: auto;
+  width: 100%;
+}
+
+.ec-behind {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    circle at var(--pointer-x) var(--pointer-y),
+    rgba(194, 164, 255, 0.6) 0%,
+    transparent 50%
+  );
+  filter: blur(50px) saturate(1.2);
+  opacity: calc(0.5 * var(--card-opacity));
+  transition: opacity 150ms ease;
+  will-change: opacity;
+}
+
+.ec-card-wrapper:hover,
+.ec-card-wrapper.active {
+  --card-opacity: 1;
+}
+
+.ec-card {
+  height: 520px;
+  display: grid;
+  width: 100%;
+  border-radius: var(--ec-card-radius);
+  position: relative;
+  animation: glow-bg 12s linear infinite;
+  box-shadow: rgba(0, 0, 0, 0.8) calc((var(--pointer-from-left) * 10px) - 3px)
+    calc((var(--pointer-from-top) * 10px) - 3px) 20px -5px;
+  transition: transform 0.6s ease;
+  will-change: transform;
+  transform: translateZ(0) rotateX(0deg) rotateY(0deg);
+  background: rgba(11, 8, 12, 0.95);
+  backface-visibility: hidden;
+  overflow: hidden;
+  border: 1px solid rgba(194, 164, 255, 0.15);
+}
+
+.ec-card:hover,
+.ec-card.active {
+  transition: none;
+  transform: translateZ(0) rotateX(var(--rotate-y)) rotateY(var(--rotate-x));
+  border-color: rgba(194, 164, 255, 0.4);
+}
+
+.ec-card-shell.entering .ec-card {
+  transition: transform 120ms ease-out;
+}
+
+.ec-card-shell {
+  position: relative;
+  z-index: 1;
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+.ec-card * {
+  display: grid;
+  grid-area: 1/-1;
+  border-radius: var(--ec-card-radius);
+  pointer-events: none;
+}
+
+.ec-inside {
+  inset: 0;
+  position: absolute;
+  background: linear-gradient(145deg, rgba(194, 164, 255, 0.08) 0%, rgba(139, 92, 246, 0.05) 100%);
+  transform: none;
+}
+
+.ec-shine {
+  transform: translate3d(0, 0, 1px);
+  overflow: hidden;
+  z-index: 3;
+  background: repeating-linear-gradient(
+      0deg,
+      rgba(255, 105, 180, 0.1) 0%,
+      rgba(255, 182, 193, 0.1) 20%,
+      rgba(173, 216, 230, 0.1) 40%,
+      rgba(194, 164, 255, 0.1) 60%,
+      rgba(221, 160, 221, 0.1) 80%,
+      rgba(255, 105, 180, 0.1) 100%
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      rgba(11, 8, 12, 0.9) 0%,
+      rgba(194, 164, 255, 0.05) 4%,
+      rgba(11, 8, 12, 0.9) 8%
+    ),
+    radial-gradient(
+      farthest-corner circle at var(--pointer-x) var(--pointer-y),
+      rgba(194, 164, 255, 0.1) 0%,
+      transparent 100%
+    );
+  background-position:
+    0 var(--background-y),
+    var(--background-x) var(--background-y),
+    center;
+  background-size:
+    500% 500%,
+    300% 300%,
+    200% 200%;
+  mix-blend-mode: color-dodge;
+  filter: brightness(0.7) contrast(1.2);
+  transition: filter 0.4s ease;
+  will-change: filter;
+}
+
+.ec-card:hover .ec-shine,
+.ec-card.active .ec-shine {
+  filter: brightness(0.9) contrast(1.4);
+}
+
+.ec-glare {
+  transform: translate3d(0, 0, 1.1px);
+  overflow: hidden;
+  background-image: radial-gradient(
+    farthest-corner circle at var(--pointer-x) var(--pointer-y),
+    rgba(194, 164, 255, 0.3) 0%,
+    rgba(139, 92, 246, 0.1) 50%,
+    transparent 100%
+  );
+  mix-blend-mode: overlay;
+  filter: brightness(0.9) contrast(1.1);
+  z-index: 4;
+}
+
+.ec-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 30px;
+  position: relative;
+  transform: translate3d(
+    calc(var(--pointer-from-left) * -4px + 2px),
+    calc(var(--pointer-from-top) * -4px + 2px),
+    0.1px
+  );
+  z-index: 5;
+  mix-blend-mode: normal;
+  pointer-events: auto;
+}
+
+.ec-logo-container {
+  width: 100px;
+  height: 100px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, rgba(194, 164, 255, 0.2), rgba(194, 164, 255, 0.1));
+  border: 2px solid rgba(194, 164, 255, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 25px;
+  box-shadow: 0 0 30px rgba(194, 164, 255, 0.3);
+  transition: all 0.4s ease;
+  position: relative;
+  overflow: visible;
+}
+
+.ec-card:hover .ec-logo-container,
+.ec-card.active .ec-logo-container {
+  background: linear-gradient(135deg, rgba(194, 164, 255, 0.3), rgba(194, 164, 255, 0.15));
+  border-color: rgba(194, 164, 255, 0.6);
+  box-shadow: 0 0 40px rgba(194, 164, 255, 0.5);
+  transform: scale(1.05);
+}
+
+.ec-logo {
+  width: 70px;
+  height: 70px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 10px rgba(194, 164, 255, 0.4));
+}
+
+.ec-details {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.ec-details h3 {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0;
+  background: linear-gradient(to bottom, #fff, var(--accentColor));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1.2;
+}
+
+.ec-details h4 {
+  font-size: 15px;
+  font-weight: 400;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.4;
+  padding: 0 10px;
+}
+
+.ec-period {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 18px;
+  background: linear-gradient(135deg, rgba(194, 164, 255, 0.2), rgba(194, 164, 255, 0.1));
+  border: 1px solid rgba(194, 164, 255, 0.4);
+  border-radius: 25px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  color: var(--accentColor);
+  text-transform: uppercase;
+  margin: 5px auto;
+  box-shadow: 0 0 20px rgba(194, 164, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.ec-card:hover .ec-period,
+.ec-card.active .ec-period {
+  background: linear-gradient(135deg, rgba(194, 164, 255, 0.3), rgba(194, 164, 255, 0.2));
+  border-color: rgba(194, 164, 255, 0.6);
+  box-shadow: 0 0 30px rgba(194, 164, 255, 0.4);
+}
+
+.ec-details p {
+  font-size: 13px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+  padding: 0 10px;
+}
+
+.ec-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+.ec-tags span {
+  padding: 6px 14px;
+  background: rgba(194, 164, 255, 0.1);
+  border: 1px solid rgba(194, 164, 255, 0.3);
+  border-radius: 16px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  color: rgba(194, 164, 255, 0.95);
+  transition: all 0.3s ease;
+}
+
+.ec-card:hover .ec-tags span,
+.ec-card.active .ec-tags span {
+  background: rgba(194, 164, 255, 0.18);
+  border-color: rgba(194, 164, 255, 0.5);
+  box-shadow: 0 0 15px rgba(194, 164, 255, 0.3);
+  color: var(--accentColor);
+}
+
+@keyframes glow-bg {
+  0% {
+    --bgrotate: 0deg;
+  }
+  100% {
+    --bgrotate: 360deg;
+  }
+}
+
+@media only screen and (max-width: 1400px) {
+  .ec-card {
+    height: 480px;
+  }
+
+  .ec-logo-container {
+    width: 90px;
+    height: 90px;
+  }
+
+  .ec-logo {
+    width: 60px;
+    height: 60px;
+  }
+
+  .ec-details h3 {
+    font-size: 22px;
+  }
+}
+
+@media only screen and (max-width: 1024px) {
+  .ec-card-wrapper {
+    perspective: none;
+    touch-action: auto;
+  }
+
+  .ec-card {
+    height: 450px;
+    transform: none !important;
+  }
+
+  .ec-behind {
+    display: none;
+  }
+
+  .ec-content {
+    padding: 35px 25px;
+    transform: none !important;
+  }
+
+  .ec-logo-container {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 20px;
+  }
+
+  .ec-logo {
+    width: 55px;
+    height: 55px;
+  }
+
+  .ec-details h3 {
+    font-size: 20px;
+  }
+
+  .ec-details h4 {
+    font-size: 14px;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .ec-card {
+    height: 420px;
+  }
+
+  .ec-content {
+    padding: 30px 20px;
+  }
+
+  .ec-details h3 {
+    font-size: 18px;
+  }
+
+  .ec-tags span {
+    font-size: 10px;
+    padding: 5px 12px;
+  }
+}
