@@ -49,7 +49,50 @@ I have modified the GSAP club plugins with the trial plugins, but with the trial
    npm run dev
    ```
 
-Open your browser and navigate to `http://localhost:3000` to view the website.
+Open your browser and navigate to `http://localhost:5173` to view the website.
+
+### Docker Installation 🐳
+
+You can also run this project using Docker:
+
+#### Development Mode (with hot reload):
+
+```bash
+# Build and run the development container
+docker-compose up dev
+
+# Or use Docker directly
+docker build -f Dockerfile.dev -t portfolio-dev .
+docker run -p 5173:5173 -v $(pwd):/app -v /app/node_modules portfolio-dev
+```
+
+Access the app at `http://localhost:5173`
+
+#### Production Mode:
+
+```bash
+# Build and run the production container
+docker-compose up prod
+
+# Or use Docker directly
+docker build -t portfolio-prod .
+docker run -p 80:80 portfolio-prod
+```
+
+Access the app at `http://localhost`
+
+#### Docker Commands:
+
+```bash
+# Stop containers
+docker-compose down
+
+# Rebuild containers
+docker-compose up --build
+
+# View logs
+docker-compose logs -f
+```
 
 ## Features
 
