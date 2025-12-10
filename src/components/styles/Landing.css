@@ -172,6 +172,7 @@
 .landing-info h3,
 .landing-info h2,
 .landing-info h2 div,
+/* Keep text structure visible but allow GSAP to animate opacity */
 .landing-h2-1,
 .landing-h2-2,
 .landing-h2-info,
@@ -179,7 +180,6 @@
 .landing-info-h2,
 .landing-info-h2 div,
 .split-line {
-  opacity: 1 !important;
   visibility: visible !important;
   display: block !important;
 }

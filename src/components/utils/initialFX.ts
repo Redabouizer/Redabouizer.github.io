@@ -25,7 +25,7 @@ export function initialFX() {
     delay: 1,
   });
 
-  // Animate simple elements first (no SplitText)
+  // Animate simple elements first
   gsap.fromTo(
     ".landing-info-h2",
     { opacity: 0, y: 30 },
@@ -49,31 +49,94 @@ export function initialFX() {
     }
   );
 
-  // Simple fade-in for main landing text (NO SplitText to avoid issues)
-  gsap.fromTo(
-    [".landing-intro h2", ".landing-intro h1", ".landing-info h3"],
-    { opacity: 0, y: 20 },
-    {
-      opacity: 1,
-      y: 0,
-      duration: 1,
-      ease: "power2.out",
-      delay: 0.2,
-      stagger: 0.1,
-    }
-  );
+  // Animate landing intro with SplitText
+  const landingIntro = document.querySelector(".landing-intro h2");
+  const landingName = document.querySelector(".landing-intro h1");
+  const landingRole = document.querySelector(".landing-info h3");
 
-  // Simple fade-in for dynamic h2 titles (NO SplitText - just make them visible)
-  gsap.set([".landing-h2-info", ".landing-h2-info-1", ".landing-h2-1", ".landing-h2-2"], {
-    opacity: 1,
-    y: 0,
-  });
+  if (landingIntro && landingName && landingRole) {
+    const splitIntro = new SplitText(landingIntro, { type: "chars" });
+    const splitName = new SplitText(landingName, { type: "chars" });
+    const splitRole = new SplitText(landingRole, { type: "chars" });
 
-  // Optional: Simple alternating animation for the h2 titles
-  const tl = gsap.timeline({ repeat: -1, repeatDelay: 2 });
-  tl.to(".landing-h2-info", { opacity: 1, duration: 0.5 })
-    .to(".landing-h2-info", { opacity: 0, duration: 0.5, delay: 3 })
-    .to(".landing-h2-info-1", { opacity: 1, duration: 0.5 }, "<")
-    .to(".landing-h2-info-1", { opacity: 0, duration: 0.5, delay: 3 })
-    .to(".landing-h2-info", { opacity: 1, duration: 0.5 }, "<");
+    gsap.fromTo(
+      splitIntro.chars,
+      { opacity: 0, y: 20 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power2.out",
+        stagger: 0.03,
+        delay: 0.2,
+      }
+    );
+
+    gsap.fromTo(
+      splitName.chars,
+      { opacity: 0, y: 20 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power2.out",
+        stagger: 0.02,
+        delay: 0.5,
+      }
+    );
+
+    gsap.fromTo(
+      splitRole.chars,
+      { opacity: 0, y: 20 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power2.out",
+        stagger: 0.02,
+        delay: 0.8,
+      }
+    );
+  }
+
+  // Animate alternating h2 titles with SplitText
+  const h2Info = document.querySelector(".landing-h2-info");
+  const h2Info1 = document.querySelector(".landing-h2-info-1");
+
+  if (h2Info && h2Info1) {
+    const splitH2 = new SplitText(h2Info, { type: "chars" });
+    const splitH21 = new SplitText(h2Info1, { type: "chars" });
+
+    gsap.set(splitH21.chars, { opacity: 0 });
+
+    const tl = gsap.timeline({ repeat: -1, repeatDelay: 2, delay: 1.5 });
+    
+    tl.fromTo(
+      splitH2.chars,
+      { opacity: 0, y: 10 },
+      { opacity: 1, y: 0, duration: 0.5, stagger: 0.02, ease: "power2.out" }
+    )
+    .to(splitH2.chars, { 
+      opacity: 0, 
+      y: -10, 
+      duration: 0.5, 
+      stagger: 0.02, 
+      ease: "power2.in",
+      delay: 2.5 
+    })
+    .fromTo(
+      splitH21.chars,
+      { opacity: 0, y: 10 },
+      { opacity: 1, y: 0, duration: 0.5, stagger: 0.02, ease: "power2.out" },
+      "<"
+    )
+    .to(splitH21.chars, { 
+      opacity: 0, 
+      y: -10, 
+      duration: 0.5, 
+      stagger: 0.02, 
+      ease: "power2.in",
+      delay: 2.5 
+    });
+  }
 }
