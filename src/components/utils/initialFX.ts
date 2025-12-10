@@ -3,14 +3,31 @@ import gsap from "gsap";
 import { smoother } from "../Navbar";
 
 export function initialFX() {
+  // Safety checks for DOM elements
+  const mainElement = document.getElementsByTagName("main")[0];
+  if (!mainElement) {
+    console.warn("Main element not found, retrying...");
+    setTimeout(() => initialFX(), 100);
+    return;
+  }
+
   document.body.style.overflowY = "auto";
-  smoother.paused(false);
-  document.getElementsByTagName("main")[0].classList.add("main-active");
+  if (smoother) {
+    smoother.paused(false);
+  }
+  mainElement.classList.add("main-active");
   gsap.to("body", {
     backgroundColor: "#0b080c",
     duration: 0.5,
     delay: 1,
   });
+
+  // Check if landing elements exist
+  const landingElements = document.querySelectorAll(".landing-info h3, .landing-intro h2, .landing-intro h1");
+  if (landingElements.length === 0) {
+    console.warn("Landing elements not found");
+    return;
+  }
 
   var landingText = new SplitText(
     [".landing-info h3", ".landing-intro h2", ".landing-intro h1"],
