@@ -166,9 +166,16 @@
 /* Ensure text is visible by default (before GSAP animation) */
 .landing-intro h2,
 .landing-intro h1,
+.landing-intro h1 span,
 .landing-info h3,
-.landing-info h2 {
-  opacity: 1;
+.landing-info h2,
+.landing-info h2 div,
+.landing-h2-1,
+.landing-h2-2,
+.landing-h2-info,
+.landing-h2-info-1,
+.landing-info-h2 {
+  opacity: 1 !important;
 }
 
 .landing-intro h2 {
