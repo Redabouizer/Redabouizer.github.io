@@ -25,47 +25,73 @@ export function initialFX() {
   // Check if landing elements exist
   const landingElements = document.querySelectorAll(".landing-info h3, .landing-intro h2, .landing-intro h1");
   if (landingElements.length === 0) {
-    console.warn("Landing elements not found");
+    console.warn("Landing elements not found, skipping animations");
+    // Elements are still visible due to CSS fallback
     return;
   }
 
-  var landingText = new SplitText(
-    [".landing-info h3", ".landing-intro h2", ".landing-intro h1"],
-    {
-      type: "chars,lines",
-      linesClass: "split-line",
+  try {
+    var landingText = new SplitText(
+      [".landing-info h3", ".landing-intro h2", ".landing-intro h1"],
+      {
+        type: "chars,lines",
+        linesClass: "split-line",
+      }
+    );
+    
+    if (!landingText.chars || landingText.chars.length === 0) {
+      console.warn("SplitText failed to create chars");
+      return;
     }
-  );
-  gsap.fromTo(
-    landingText.chars!,
-    { opacity: 0, y: 80, filter: "blur(5px)" },
-    {
-      opacity: 1,
-      duration: 1.2,
-      filter: "blur(0px)",
-      ease: "power3.inOut",
-      y: 0,
-      stagger: 0.025,
-      delay: 0.3,
-    }
-  );
+    
+    gsap.fromTo(
+      landingText.chars!,
+      { opacity: 0, y: 80, filter: "blur(5px)" },
+      {
+        opacity: 1,
+        duration: 1.2,
+        filter: "blur(0px)",
+        ease: "power3.inOut",
+        y: 0,
+        stagger: 0.025,
+        delay: 0.3,
+      }
+    );
+  } catch (error) {
+    console.error("Error in landing text animation:", error);
+    // Ensure text is visible even if animation fails
+    landingElements.forEach(el => {
+      (el as HTMLElement).style.opacity = "1";
+    });
+    return;
+  }
 
   let TextProps = { type: "chars,lines", linesClass: "split-h2" };
 
-  var landingText2 = new SplitText(".landing-h2-info", TextProps);
-  gsap.fromTo(
-    landingText2.chars!,
-    { opacity: 0, y: 80, filter: "blur(5px)" },
-    {
-      opacity: 1,
-      duration: 1.2,
-      filter: "blur(0px)",
-      ease: "power3.inOut",
-      y: 0,
-      stagger: 0.025,
-      delay: 0.3,
+  // Wrap remaining animations in try-catch
+  try {
+    const h2InfoElement = document.querySelector(".landing-h2-info");
+    if (h2InfoElement) {
+      var landingText2 = new SplitText(".landing-h2-info", TextProps);
+      if (landingText2.chars && landingText2.chars.length > 0) {
+        gsap.fromTo(
+          landingText2.chars!,
+          { opacity: 0, y: 80, filter: "blur(5px)" },
+          {
+            opacity: 1,
+            duration: 1.2,
+            filter: "blur(0px)",
+            ease: "power3.inOut",
+            y: 0,
+            stagger: 0.025,
+            delay: 0.3,
+          }
+        );
+      }
     }
-  );
+  } catch (error) {
+    console.error("Error in landingText2 animation:", error);
+  }
 
   gsap.fromTo(
     ".landing-info-h2",

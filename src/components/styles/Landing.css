@@ -162,6 +162,15 @@
   top: 12%;
   left: 0;
 }
+
+/* Ensure text is visible by default (before GSAP animation) */
+.landing-intro h2,
+.landing-intro h1,
+.landing-info h3,
+.landing-info h2 {
+  opacity: 1;
+}
+
 .landing-intro h2 {
   margin: 0;
   color: var(--accentColor);
