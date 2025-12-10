@@ -48,9 +48,8 @@ const WorkImage = (props: Props) => {
             style={{ 
               width: '100%', 
               height: '100%', 
-              objectFit: 'cover',
-              imageRendering: 'high-quality'
-            }}
+              objectFit: 'cover'
+            } as React.CSSProperties}
           />
         ) : (
           <img 
