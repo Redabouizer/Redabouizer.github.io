@@ -163,10 +163,12 @@
   left: 0;
 }
 
-/* Ensure text is visible by default (before GSAP animation) */
+/* CRITICAL: Ensure all text is ALWAYS visible - override any GSAP animations */
+.landing-intro,
 .landing-intro h2,
 .landing-intro h1,
 .landing-intro h1 span,
+.landing-info,
 .landing-info h3,
 .landing-info h2,
 .landing-info h2 div,
@@ -174,8 +176,17 @@
 .landing-h2-2,
 .landing-h2-info,
 .landing-h2-info-1,
-.landing-info-h2 {
+.landing-info-h2,
+.landing-info-h2 div,
+.split-line {
   opacity: 1 !important;
+  visibility: visible !important;
+  display: block !important;
+}
+
+.landing-intro h2,
+.landing-intro h1 {
+  display: block !important;
 }
 
 .landing-intro h2 {
