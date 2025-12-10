@@ -68,11 +68,17 @@ export function initialFX() {
 
   let TextProps = { type: "chars,lines", linesClass: "split-h2" };
 
+  // Declare variables at the top level
+  let landingText2: SplitText | null = null;
+  let landingText3: SplitText | null = null;
+  let landingText4: SplitText | null = null;
+  let landingText5: SplitText | null = null;
+
   // Wrap remaining animations in try-catch
   try {
     const h2InfoElement = document.querySelector(".landing-h2-info");
     if (h2InfoElement) {
-      var landingText2 = new SplitText(".landing-h2-info", TextProps);
+      landingText2 = new SplitText(".landing-h2-info", TextProps);
       if (landingText2.chars && landingText2.chars.length > 0) {
         gsap.fromTo(
           landingText2.chars!,
@@ -115,12 +121,24 @@ export function initialFX() {
     }
   );
 
-  var landingText3 = new SplitText(".landing-h2-info-1", TextProps);
-  var landingText4 = new SplitText(".landing-h2-1", TextProps);
-  var landingText5 = new SplitText(".landing-h2-2", TextProps);
+  try {
+    const h2Info1Element = document.querySelector(".landing-h2-info-1");
+    const h21Element = document.querySelector(".landing-h2-1");
+    const h22Element = document.querySelector(".landing-h2-2");
 
-  LoopText(landingText2, landingText3);
-  LoopText(landingText4, landingText5);
+    if (h2Info1Element) landingText3 = new SplitText(".landing-h2-info-1", TextProps);
+    if (h21Element) landingText4 = new SplitText(".landing-h2-1", TextProps);
+    if (h22Element) landingText5 = new SplitText(".landing-h2-2", TextProps);
+
+    if (landingText2 && landingText3) {
+      LoopText(landingText2, landingText3);
+    }
+    if (landingText4 && landingText5) {
+      LoopText(landingText4, landingText5);
+    }
+  } catch (error) {
+    console.error("Error in loop text animations:", error);
+  }
 }
 
 function LoopText(Text1: SplitText, Text2: SplitText) {
